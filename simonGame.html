@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Simon Game</title>
+    <link rel="stylesheet" href="simonGame.css">
+  </head>
+
+  <body>
+     <!-- show level of game and inform user when his turn comes  -->
+    <div class="header">
+       <h1 id="level-title">Press Any Key to Start</h1>
+       <hr/>
+       <h3 id="whose-turn"></h3>
+    </div>
+
+     <!-- container contains two sec 1. group of 4 colored buttons (i.e. red ,green, blue ,yellow)  and
+   second section to show score of user -->
+
+    <div class="container">
+      <div class="buttons-section">
+         <div class="row">
+                 <div type="button" id="green" class="btn green">
+                 </div>
+
+                 <div type="button" id="red" class="btn red">
+                 </div>
+         </div>
+
+         <div class="row">
+                 <div type="button" id="yellow" class="btn yellow">
+                 </div>
+
+                 <div type="button" id="blue" class="btn blue">
+                 </div>
+         </div>
+     </div>
+
+    <div class="score-section">
+         <h3 id="score"></h3>
+    </div>
+  </div>
+  <hr/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="simonGame.js"  charset="utf-8"></script>
+  </body>
+</html>

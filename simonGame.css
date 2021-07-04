@@ -1,0 +1,125 @@
+body {
+  text-align: center;
+  background-color: #011F3F;
+}
+
+.header{
+  height: 8rem;
+  line-height: 0.6;
+  margin:  2% 6%;
+
+}
+
+#level-title {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 3rem;
+  margin-bottom:4%;
+  color: #FEF2BF;
+}
+hr{
+  color: white;
+}
+#whose-turn{
+  font-family: cursive;
+  font-size: 2rem;
+  color:#DEEDF0;
+}
+#score{
+  font-size: 2.5rem;
+  color:#E5D549;
+}
+.container{
+  display: grid;
+  grid-template-columns:50% 50%;
+}
+.buttons-section {
+  display: block;
+}
+
+.btn {
+  margin: 25px;
+  display: inline-block;
+  height: 150px;
+  width: 150px;
+  border: 10px solid black;
+  border-radius: 20%;
+}
+
+.game-over {
+  background-color: red;
+  opacity: 0.8;
+}
+.hurray{
+  background-color: yellow;
+  opacity: 0.7;
+}
+
+.red {
+  background-color: red;
+}
+
+.green {
+  background-color: green;
+}
+
+.blue {
+  background-color: blue;
+}
+
+.yellow {
+  background-color: yellow;
+}
+
+.pressed {
+  box-shadow: 0 0 20px white;
+  background-color: grey;
+}
+
+@media screen and (max-width: 974px) {
+  .header{
+    height: 6rem;
+  }
+  #level-title{
+    font-size:2.5rem;
+  }
+  #whose-turn{
+    font-size: 1.6rem;
+    color:#FEF2BF;
+  }
+  #score{
+    font-size: 2rem;
+    color:#FEF2BF;
+  }
+  .btn{
+    margin:20px;
+    height: 120px;
+    width: 120px;
+  }
+  .container{
+  margin-top:10%;
+}
+@media screen and (max-width: 768px) {
+  .header{
+    height: 4rem;
+  }
+  #level-title{
+    font-size:2rem;
+  }
+  #whose-turn{
+    font-size: 1.3rem;
+    color:#FEF2BF;
+  }
+  #score{
+    font-size: 1.8rem;
+    color:#FEF2BF;
+  }
+  .btn{
+    margin:16px;
+    height: 80px;
+    width: 80px;
+  }
+  .container{
+    margin-top:12%;
+    grid-template-columns: 65% 35%;
+  }
+}
