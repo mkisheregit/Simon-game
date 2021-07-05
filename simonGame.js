@@ -23,6 +23,15 @@ $(document).keypress(function(){
    }
   });
 
+$(document).touchstart(function(){
+   if(!started){
+     $("#level-title").text("Level :" + level); /* show level to screen*/
+     $("#score").text("Score : " + score);    /* show score to screen*/
+     nextSequence();       /* call this and it will create and show combination of colors according to game level */
+     started=true;  /*once game has started, make startd true so that further key press would not start game from zer0 level*/
+   }
+  });
+
 
   function nextSequence() { /*this will be called when game has started or user has just leveled up*/
 
