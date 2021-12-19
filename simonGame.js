@@ -92,7 +92,7 @@ function checksequence(currentlevel) {
 }
 
 function playSound(name) { /* play sound */
-    var audio = new Audio("./sounds/" + name + ".mp3");
+    var audio = new Audio("Sounds/" + name + ".mp3");
     audio.play();
 }
 
