@@ -92,7 +92,7 @@ function checksequence(currentlevel) {
 }
 
 function playSound(name) { /* play sound */
-    var audio = new Audio("./Sounds/" + name + ".mp3");
+    var audio = new Audio("https://raw.githubusercontent.com/mkisheregit/simon-game/master2/Sounds/"+name+".mp3");
     audio.play();
 }
 
