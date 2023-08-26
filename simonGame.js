@@ -1,104 +1,157 @@
+const simonButtons=["red", "blue", "green", "yellow"];
+var orderShown=[];
+var orderFollowed=[];
+
+var isGameStarted =false;
 var level;
 var score;
-var started = false;
-var i;
 
-var buttoncolors = ["red", "blue", "green", "yellow"];
-var gamepattern = [];
-var userclickedpattern = []; /* intial value : empty*/
+// DISABLE BUTTONS WHEN WINDOW ONLOAD
+DisableSimonButtons();
 
-$('.btn').prop('disabled', true);
-
-$('#startButton').on("click", function() {
-    if (!started) {
-        score = 0;
-        level = 0;
-        $("#level-title").text("Level :" + level);
-        $("#score").text("Score : " + score);
-        nextSequence();
-        started = true;
+$("#playButton").on("click",()=>{
+    if(isGameStarted==false){
+       level=0;
+       score=0; 
+       UpdateLevel(level);
+       UpdateScore(score);
+       isGameStarted=true;
+       CreateNewOrder();
+       $("#playButton").css("visibility","hidden");
+       $(".score-container").css("margin","0 0 0 6rem");
     }
+})
 
-});
-
-
-function nextSequence() { /*this will be called when game has started or user has just leveled up*/
-    $(".btn").prop("disabled", true);
-    userclickedpattern = []; /*every time, when level will be up , make this empty to store new clicks of user */
-    gamepattern = []; /*every time level increase, show new combination, so have to make gamepattern empty*/
-    level++; /*increase value of level every time when nextSequence is called*/
-
-    $("#level-title").text("Level : " + level); /* set level */
-    $("#whose-turn").text(".. wait ..");
-    for (i = 1; i <= level; i++) /*if level=2 ,total colors in combination equals to level(=2) */ {
-        setTimeout(function() {
-            var randomNo = Math.floor(Math.random() * 4); /* random no between 0 to3 */
-            var randomcolor = buttoncolors[randomNo]; /* find random color from buttoncolors array */
-            gamepattern.push(randomcolor); /*push color to gamepattern*/
-            $("#" + randomcolor).fadeIn(100).fadeOut(100).fadeIn(100); /* show animation to button/color which we get as randomcolor*/
-            playSound(randomcolor); /*play sound  to that color*/
-            animatePress(randomcolor); /* show decoration on body */
-            console.log("Game-Pattern : " + gamepattern);
-            $("#whose-turn").text(".. wait ..");
-        }, 800 * i);
+$(".btn").on("click",async function(){
+    const buttonPressed = $(this).attr("id");
+    new Promise((resolve)=>{
+        $(this).fadeIn(75).fadeOut(75).fadeIn(75,()=>{
+            resolve();
+        });
+    })  
+    orderFollowed.push(buttonPressed);
+    let isCorrect = CheckOrderFollowed(orderFollowed.length-1);
+    if(isCorrect){
+        AnimateButtonAfterCorrectPress();
+    }else{
+        AnimateButtonAfterWrongPress();
     }
+})
 
-    setTimeout(function() {
-        $("#whose-turn").text("your turn");
-        enableButtons();
-    }, 1000 * (i - 1));
+async function CreateNewOrder(){
+   // DISABLE BUTTONS WHEN PATTERN/ORDER IS BEING CREATED 
+   DisableSimonButtons();
+
+   orderShown=[];
+   orderFollowed=[];
+   level++;
+   
+   UpdateLevel(level);
+   const delay = 500;
+
+   for(i=0;i<level;i++){
+    await new Promise((resolve)=>{
+        setTimeout(()=>{
+            let generatedIndex = Math.floor(Math.random()*simonButtons.length);
+            let buttonSelected = simonButtons[generatedIndex];
+            orderShown.push(buttonSelected);
+       
+            $("#" + buttonSelected).fadeIn(75).fadeOut(75).fadeIn(75,()=>{
+                PlayAudio(buttonSelected);
+                AnimatePressedButton(buttonSelected);
+                resolve();
+            });
+        },delay); 
+    })     
+   }
+   
+   // CREATE SYNCHRONOUS DELAY OF 800 MS ONCE ORDER IS DONE
+   await new Promise((resolve)=>{
+    setTimeout(()=>{
+        $(".message").text(" Continue now ").fadeIn(100).fadeOut(400,()=>{
+        EnableSimonButtons();
+        resolve();
+        })   
+    },500);
+   });
 }
 
-function enableButtons() {
-    $('.btn').prop('disabled', false);
+function CheckOrderFollowed(currentIndex){
+    if(orderFollowed[currentIndex] !== orderShown[currentIndex])
+    return false;
+    else 
+    return true;
 }
 
-$(".btn").on("click", function() {
-    var userclickedcolor = $(this).attr("id");
-    userclickedpattern.push(userclickedcolor);
-    playSound(userclickedcolor);
-    animatePress(userclickedcolor);
-    checksequence(userclickedpattern.length - 1);
-});
+async function AnimateButtonAfterCorrectPress(){
+    score += level;
+    UpdateScore(score); 
 
-
-
-function checksequence(currentlevel) {
-    if (userclickedpattern[currentlevel] === gamepattern[currentlevel]) {
-        score += level;
-        $("#score").text("Score : " + score);
-        if (userclickedpattern.length === gamepattern.length) {
-            $("body").addClass("hurray");
-            setTimeout(function() {
-                $("#whose-turn").text("congrats! Level up");
+    if (orderFollowed.length === orderShown.length) {
+        $("body").addClass("hurray");
+        PlayAudio("hurray"); 
+        new Promise((resolve)=>{
+            setTimeout(()=>{
+                orderFollowed=[];        
+                CreateNewOrder();
                 $("body").removeClass("hurray");
-                playSound("hurray");
+                $(".message").text(" Cheers! Level Up ").fadeIn(100).fadeOut(900,()=>{                                                        
+                    resolve();
+                });
             }, 100);
-            nextSequence();
-        }
-    } else {
-        playSound("wrong");
-        $("#whose-turn").text("oops! pressed wrong button")
-        $("#level-title").text("Game Over!");
-        started = false;
-        level = 0;
-        gamepattern = [];
-        userClickedPattern = [];
-        $("body").addClass("game-over");
+        })       
+    }
+    else{
+        PlayAudio(orderFollowed[orderFollowed.length-1]);
+    }
+}
+
+async function AnimateButtonAfterWrongPress(){
+    $("body").addClass("game-over");
+    PlayAudio("wrong");
+    $("#level").text("Game Over!");
+    $("#playButton").text("RESTART");
+    new Promise((resolve)=>{
         setTimeout(function() {
             $("body").removeClass("game-over");
+            DisableSimonButtons();
+            isGameStarted = false;
+            orderShown=[];
+            orderFollowed=[];    
+            $("#playButton").css("visibility","visible");
+            $(".message").text(" Oops! Wrong Button ").fadeIn(100).fadeOut(900,()=>{
+                resolve();
+            });                       
         }, 100);
-    }
+    });
 }
 
-function playSound(name) { /* play sound */
-    var audio = new Audio("https://raw.githubusercontent.com/mkisheregit/simon-game/master2/Sounds/"+name+".mp3");
+// UTILITY FUNCTIONS 
+function PlayAudio(buttonSelected) { 
+    var audio = new Audio("https://raw.githubusercontent.com/mkisheregit/simon-game/master2/Sounds/"+buttonSelected+".mp3");
     audio.play();
 }
 
-function animatePress(color) { /*show anitmation function according to color*/
-    $("#" + color).addClass("pressed");
+function AnimatePressedButton(color) { 
+    $("#"+color).addClass("pressed");
     setTimeout(function() {
-        $("#" + color).removeClass("pressed");
+        $("#"+color).removeClass("pressed");
     }, 100);
 }
+
+ function DisableSimonButtons(){
+    $(".btn").prop("disabled",true);
+}
+
+ function EnableSimonButtons(){
+    $(".btn").prop("disabled",false);
+}
+
+ function UpdateLevel(level){
+    $("#level").html("Level : <b>"+level+"</b>");
+}
+
+ function UpdateScore(score){
+    $("#score").html("Score : <b>"+score+"</b>");
+}
+

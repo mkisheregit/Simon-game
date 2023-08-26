@@ -8,32 +8,37 @@
 </head>
 
 <body>
-    <!-- show level of game and inform user when his turn comes  -->
-    <div class="header">
-        <h1 id="level-title">Simon Game</h1>
-        <hr/>
-        <h3 id="whose-turn"></h3>
+
+    <div class="notification-container">
+        <p class="message"></p>
     </div>
 
-    <div class="container">
-        <button type="button" id="startButton">Start</button>
-        <div class="buttons-section">
-            <button type="button" id="green" class="btn green">
-                </button>
-            <button type="button" id="red" class="btn red">
-                </button>
-            <button type="button" id="yellow" class="btn yellow">
-                </button>
-            <button type="button" id="blue" class="btn blue">
-                </button>
+    <div class="header">
+        <h1 id="heading">Simon Game</h1>        
+        <button type="button" id="playButton">PLAY</button>
+    </div>
+
+    <div class="content-wrapper">
+        <div class="buttons-Container">
+            <div class="button-wrapper">
+                <button type="button" id="green" class="btn green"></button>
+            </div>
+            <div class="button-wrapper">
+                <button type="button" id="red" class="btn red"></button>
+            </div>
+            <div class="button-wrapper">    
+                <button type="button" id="yellow" class="btn yellow"></button>
+            </div>
+            <div class="button-wrapper"> 
+                <button type="button" id="blue" class="btn blue"></button>
+            </div>  
+        </div>
+        <div class="score-container">
+            <p id="score"></p>
+            <p id="level"></p>
         </div>
     </div>
 
-    <div class="score-section">
-        <h3 id="score"></h3>
-    </div>
-    </div>
-    <hr/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="simonGame.js" charset="utf-8"></script>
 </body>
