@@ -22,7 +22,7 @@ You can check out the live demo of the Simon Game [here](https://mohit-kumar20.g
 1. Clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/your-username/simon-game.git
+git clone https://github.com/mohit-kumar20/simon-game.git
 ```
 2. Open the project folder:
 
