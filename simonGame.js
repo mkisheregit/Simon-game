@@ -5,6 +5,8 @@ var orderFollowed=[];
 var isGameStarted =false;
 var level;
 var score;
+var buttonAnimationDelay=1100;
+var patternDelay = 1000;
 
 // DISABLE BUTTONS WHEN WINDOW ONLOAD
 DisableSimonButtons();
@@ -25,7 +27,7 @@ $("#playButton").on("click",()=>{
 $(".btn").on("click",async function(){
     const buttonPressed = $(this).attr("id");
     new Promise((resolve)=>{
-        $(this).fadeIn(75).fadeOut(75).fadeIn(75,()=>{
+        $(this).fadeIn(200).fadeOut(200).fadeIn(200,()=>{
             resolve();
         });
     })  
@@ -47,7 +49,6 @@ async function CreateNewOrder(){
    level++;
    
    UpdateLevel(level);
-   const delay = 500;
 
    for(i=0;i<level;i++){
     await new Promise((resolve)=>{
@@ -56,24 +57,23 @@ async function CreateNewOrder(){
             let buttonSelected = simonButtons[generatedIndex];
             orderShown.push(buttonSelected);
        
-            $("#" + buttonSelected).fadeIn(75).fadeOut(75).fadeIn(75,()=>{
+            $("#" + buttonSelected).fadeIn(100).fadeOut(100).fadeIn(100,()=>{
                 PlayAudio(buttonSelected);
                 AnimatePressedButton(buttonSelected);
                 resolve();
             });
-        },delay); 
-    })     
+        },buttonAnimationDelay); 
+    })  
    }
    
-   // CREATE SYNCHRONOUS DELAY OF 800 MS ONCE ORDER IS DONE
+   // CREATE SYNCHRONOUS DELAY OF 500 MS ONCE ORDER IS DONE
    await new Promise((resolve)=>{
     setTimeout(()=>{
-        $(".message").text(" Continue now ").fadeIn(100).fadeOut(400,()=>{
         EnableSimonButtons();
-        resolve();
-        })   
-    },500);
+        resolve();  
+    },patternDelay);
    });
+   patternDelay+=100;
 }
 
 function CheckOrderFollowed(currentIndex){
@@ -94,11 +94,9 @@ async function AnimateButtonAfterCorrectPress(){
             setTimeout(()=>{
                 orderFollowed=[];        
                 CreateNewOrder();
-                $("body").removeClass("hurray");
-                $(".message").text(" Cheers! Level Up ").fadeIn(100).fadeOut(900,()=>{                                                        
-                    resolve();
-                });
-            }, 100);
+                $("body").removeClass("hurray");                                                      
+                    resolve();                
+            }, 175);
         })       
     }
     else{
@@ -119,10 +117,8 @@ async function AnimateButtonAfterWrongPress(){
             orderShown=[];
             orderFollowed=[];    
             $("#playButton").css("visibility","visible");
-            $(".message").text(" Oops! Wrong Button ").fadeIn(100).fadeOut(900,()=>{
-                resolve();
-            });                       
-        }, 100);
+            resolve();                     
+        }, 175);
     });
 }
 

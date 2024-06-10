@@ -7,8 +7,7 @@
         .notification-container{
             position: absolute;
             text-align: center;
-            top:4px;
-            right:4px;
+            margin:auto;
         }
 
         .message {
@@ -19,6 +18,7 @@
             border-radius: 0.6rem;
             padding : 0 2rem;
             margin:0;
+            width: 20%;
         }
         
         .header {
@@ -42,8 +42,9 @@
             border-radius: 100%;
             padding:0.5rem;
             font-weight: bolder;
-
+            cursor: pointer;
         }
+
 
         .content-wrapper{
             display: flex; 
@@ -116,6 +117,40 @@
         .hurray {
             background-color: yellow;
             opacity: 0.7;
+        }
+        
+        
+        /* Add a media query for mobile screens */
+        @media (max-width: 768px) {
+            body {
+                font-size: 14px; /* Adjust font size for mobile */
+            }
+        
+            .header {
+                margin: 1rem 0;
+            }
+        
+            #heading {
+                font-size: 2rem;
+            }
+        
+            #playButton {
+                font-size: 1.5rem;
+            }
+        
+            .content-wrapper {
+                margin: 1rem 0;
+            }
+        
+            .buttons-Container {
+                max-width: 16rem;
+                margin: 0 auto; /* Center the container */
+            }
+        
+            #score,
+            #level {
+                font-size: 1.5rem;
+            }
         }
         
         
